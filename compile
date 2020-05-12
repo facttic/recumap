@@ -1,0 +1,2 @@
+NODE_ENV=prod npm run deploy
+mix phx.digest

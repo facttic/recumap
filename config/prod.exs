@@ -17,22 +17,15 @@ database_url =
     """
 
 config :recumap, Recumap.Repo,
-  # ssl: true,
+  ssl: true,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 config :recumap, RecumapWeb.Endpoint,
   server: true,
-  force_ssl: [hsts: true, subdomains: true, host: nil],
-  url: [host: "recumap.example", port: 443],
-  http: [:inet6, port: System.get_env("PORT", "4000")],
-  https: [
-    :inet6,
-    port: 4443,
-    cipher_suite: :strong,
-    keyfile: "priv/ssl/privkey.pem",
-    certfile: "priv/ssl/fullchain.pem"
-  ],
+  http: [port: {:system, "PORT"}],
+  url: [scheme: "https", host: "safe-retreat-64018.herokuapp.com", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   secret_key_base: System.fetch_env!("SECRET_KEY_BASE"),
   cache_static_manifest: "priv/static/cache_manifest.json"
 
